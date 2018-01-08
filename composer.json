@@ -1,0 +1,17 @@
+{
+    "name": "leadingfellows/php-rpm-packager",
+    "description": "Configuration parser/merger",
+    "license": "",
+    "keywords": ["dotenv", "yaml", "configuration"],
+    "autoload": {
+        "psr-4": {
+            "leadingfellows\\utils\\": "src/"
+        }
+    },
+    "require": {
+		"symfony/yaml": "~4.0",
+        "josegonzalez/php-dotenv": "~3.2"
+    },
+    "require-dev": {
+    }
+}

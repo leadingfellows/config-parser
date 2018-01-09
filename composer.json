@@ -1,5 +1,5 @@
 {
-    "name": "leadingfellows/php-rpm-packager",
+    "name": "leadingfellows/config-parser",
     "description": "Configuration parser/merger",
     "license": "",
     "keywords": ["dotenv", "yaml", "configuration"],

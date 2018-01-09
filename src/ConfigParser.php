@@ -4,8 +4,8 @@ namespace leadingfellows\utils;
 
 class ConfigParser {
 	
-	protected array $configuration;
-	protected array $history;
+	protected $configuration;
+	protected $history;
 
 	function __construct() {
 		$this->configuration = array();

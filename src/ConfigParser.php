@@ -76,7 +76,7 @@ class ConfigParser {
 		$dotenv_cfg = $loader->toArray();
 		$this->history [] = array("path" => $dotenv_filepath, "type" => "dotenv", "value" => $dotenv_cfg);
 		$this->configuration = array_replace_recursive($this->configuration, $dotenv_cfg);
-		return true;
+		return $dotenv_cfg;
 	}
 
 

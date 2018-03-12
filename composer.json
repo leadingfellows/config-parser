@@ -9,9 +9,10 @@
         }
     },
     "require": {
-		"symfony/yaml": ">=3.2.8",
+		"symfony/yaml": ">=3.2",
         "josegonzalez/dotenv": "~3.2"
     },
     "require-dev": {
+    
     }
 }

@@ -2,6 +2,7 @@
     "name": "leadingfellows/config-parser",
     "description": "Configuration parser/merger",
     "keywords": ["dotenv", "yaml", "configuration"],
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "leadingfellows\\utils\\": "src/"

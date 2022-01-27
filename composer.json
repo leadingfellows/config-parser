@@ -10,7 +10,7 @@
     },
     "require": {
 		"symfony/yaml": ">=3.2",
-        "grasmash/yaml-expander": ">=1.4",
+        "grasmash/yaml-expander": "^3",
         "josegonzalez/dotenv": ">=3.2"
     },
     "require-dev": {

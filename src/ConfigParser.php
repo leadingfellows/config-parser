@@ -65,8 +65,12 @@ class ConfigParser
         }
         $yml_cfg = (array)\Symfony\Component\Yaml\Yaml::parse($yml_filepath_or_string, true, false, false);
         if($use_expander) {
-            $expander = new  \Grasmash\YamlExpander\YamlExpander($logger);
+          if(class_exists("\Grasmash\YamlExpander\YamlExpander")) {
+			$expander = new  \Grasmash\YamlExpander\YamlExpander($logger);
             $yml_cfg = $expander->expandArrayProperties($yml_cfg);
+          } else if (class_exists("\Grasmash\YamlExpander\Expander")) {
+            $yml_cfg = \Grasmash\YamlExpander\Expander::expandArrayProperties($yml_cfg);
+          }
         }
         $this->history [] = array("yml" => $yml_filepath_or_string, "path" => $path, "type" => "yaml", "value" => $yml_cfg);
         $this->configuration = array_replace_recursive($this->configuration, $yml_cfg);

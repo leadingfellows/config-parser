@@ -1,18 +1,23 @@
 <?php
 
 namespace leadingfellows\utils;
+use Psr\Log\NullLogger;
 
-class ConfigParser {
+
+class ConfigParser
+{
     
     protected $configuration;
     protected $history;
 
-    function __construct() {
+    function __construct()
+    {
         $this->configuration = array();
     }
 
 
-    public static function env_to_array_custom(array $environment) {
+    public static function env_to_array_custom(array $environment)
+    {
         $result = array();
         foreach ($environment as $flat => $value) {
             $keys = explode('__', $flat);
@@ -48,19 +53,20 @@ class ConfigParser {
     /**
      *
      */
-    function addYaml($yml_filepath_or_string, $use_expander=false) {
-      $path = null;
+    function addYaml($yml_filepath_or_string, $use_expander=false, $logger = null)
+    {
+        if (null == $logger) {
+            $logger = new NullLogger();
+        }
+        $path = null;
         if (file_exists($yml_filepath_or_string)) {
-      $path = $yml_filepath_or_string;
-      $yml_filepath_or_string = file_get_contents($yml_filepath_or_string);
+            $path = $yml_filepath_or_string;
+            $yml_filepath_or_string = file_get_contents($yml_filepath_or_string);
         }
         $yml_cfg = (array)\Symfony\Component\Yaml\Yaml::parse($yml_filepath_or_string, true, false, false);
         if($use_expander) {
-          if(class_exists("\Grasmash\YamlExpander\YamlExpander")) {
-            $yml_cfg = \Grasmash\YamlExpander\YamlExpander::expandArrayProperties($yml_cfg);
-          } else if (class_exists("\Grasmash\YamlExpander\Expander")) {
-            $yml_cfg = \Grasmash\YamlExpander\Expander::expandArrayProperties($yml_cfg);
-          }
+            $expander = new  \Grasmash\YamlExpander\YamlExpander($logger);
+            $yml_cfg = $expander->expandArrayProperties($yml_cfg);
         }
         $this->history [] = array("yml" => $yml_filepath_or_string, "path" => $path, "type" => "yaml", "value" => $yml_cfg);
         $this->configuration = array_replace_recursive($this->configuration, $yml_cfg);
@@ -70,7 +76,8 @@ class ConfigParser {
     /**
      *
      */
-    function addDotEnv($dotenv_filepath, $prefix=null) {
+    function addDotEnv($dotenv_filepath, $prefix=null)
+    {
         if (!file_exists($dotenv_filepath)) {
             return null;
         }
@@ -89,20 +96,22 @@ class ConfigParser {
     }
 
 
-    function add($type, $path) {
+    function add($type, $path, $logger = null)
+    {
         switch($type) {
-            case "yaml":
-                $this->addYaml($path);
-                break;
-            case "dotenv":
-                $this->addDotEnv($path);
-                break;
-            default:
-                throw new \Exception("invalid type '" . $type . "'");
+        case "yaml":
+            $this->addYaml($path);
+            break;
+        case "dotenv":
+            $this->addDotEnv($path);
+            break;
+        default:
+            throw new \Exception("invalid type '" . $type . "'");
         }
     }
 
-    function toArray() {
+    function toArray()
+    {
         return (array)$this->configuration;
     }
 
